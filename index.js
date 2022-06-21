@@ -127,12 +127,10 @@ app.post('/votes/:site/:vote', (req, res) => {
 
     db.addVote(site, ip, vote);
 
-    return res.json({success: true});
+    return res.json({success: true, percent: getPercent(site)});
 });
 
-app.get('/votes/:site', (req, res) => {
-    const site = req.params.site;
-
+function getPercent(site) {
     if (!db.data.counts[site]) {
         db.data.counts[site] = [0,0];
     }
@@ -146,7 +144,13 @@ app.get('/votes/:site', (req, res) => {
 
     percent = Math.floor(percent * 100);
 
-    return res.json({percent, success: true});
+    return percent;
+}
+
+app.get('/votes/:site', (req, res) => {
+    const site = req.params.site;
+
+    return res.json({percent: getPercent(site), success: true});
 });
 
 function saveAndCleanup() {
@@ -154,7 +158,7 @@ function saveAndCleanup() {
     db.save();
 }
 
-setInterval(saveAndCleanup, 300000)
+setInterval(saveAndCleanup, 86400000)
 
 try {
     app.listen(3000, () => {
