@@ -90,14 +90,14 @@ process.on("exit", (code) => {
 });
 
 // just in case some user like using "kill"
-process.on("SIGTERM", (signal) => {
+process.on("SIGTERM", () => {
     console.log("Saving DB");
     saveAndCleanup();
     process.exit(0);
 });
 
 // catch ctrl-c, so that event 'exit' always works
-process.on("SIGINT", (signal) => {
+process.on("SIGINT", () => {
     console.log("Saving DB");
     saveAndCleanup();
     process.exit(0);
@@ -105,7 +105,7 @@ process.on("SIGINT", (signal) => {
 
 // what about errors
 // try remove/comment this handler, 'exit' event still works
-process.on("uncaughtException", (err) => {
+process.on("uncaughtException", () => {
     console.log("Saving DB");
     saveAndCleanup();
     process.exit(1);
