@@ -143,7 +143,7 @@ function getPercent(site) {
     // get vote percentage
     let percent = counts[0] / (counts[0]+counts[1]);
 
-    if (isNaN(percent)) percent = 50;
+    if (isNaN(percent)) percent = 0.5;
 
     percent = Math.floor(percent * 100);
 
