@@ -1,6 +1,7 @@
 const express = require('express');
 const crypto = require('crypto');
 const fs = require('fs');
+const cors = require('cors');
 
 function randomString(length) {
     let result           = '';
@@ -114,6 +115,8 @@ process.on("uncaughtException", () => {
 
 const app = express();
 
+app.use(cors());
+
 // load votes from file
 
 app.post('/votes/:site/:vote', (req, res) => {
@@ -138,7 +141,7 @@ function getPercent(site) {
     let counts = db.data.counts[site];
 
     // get vote percentage
-    let percent = (counts[0]-counts[1]) / (counts[0]+counts[1]);
+    let percent = counts[0] / (counts[0]+counts[1]);
 
     if (isNaN(percent)) percent = 0;
 
@@ -152,6 +155,8 @@ app.get('/votes/:site', (req, res) => {
 
     return res.json({percent: getPercent(site), success: true});
 });
+
+app.options('*', cors());
 
 function saveAndCleanup() {
     db.refreshRandom();
