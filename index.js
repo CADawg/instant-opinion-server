@@ -156,6 +156,8 @@ app.get('/votes/:site', (req, res) => {
     return res.json({percent: getPercent(site), success: true});
 });
 
+app.use(express.static('public'));
+
 app.options('*', cors());
 
 function saveAndCleanup() {
@@ -166,8 +168,8 @@ function saveAndCleanup() {
 setInterval(saveAndCleanup, 86400000)
 
 try {
-    app.listen(3000, () => {
-        console.log('App listening on port 3000!');
+    app.listen(6721, () => {
+        console.log('App listening on port 6721!');
     });
 } catch (e) {
     console.log("Saving DB");
